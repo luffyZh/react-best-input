@@ -28,4 +28,3 @@ import BestInput from 'react-best-input'
   - onChange(e, value): [Function]. BestInput onChange function.
   - getLength(length): [Function]. Get the BestInput's custom value length.
   - ...Others. Follow-up development. 
-
