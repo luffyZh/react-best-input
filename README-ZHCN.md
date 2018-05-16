@@ -1,5 +1,5 @@
 # react-best-input
-A simple and best input component for react.
+简易的、方便的、功能较为齐全的react input组件.
 
 ### Demo示例
 ```
