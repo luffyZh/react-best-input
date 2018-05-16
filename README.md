@@ -24,7 +24,7 @@ import BestInput from 'react-best-input'
   - error: [boolean]. Automatically add error status.
   - errMsg: [string]. Automatically add errMsg under the input.
   - addons: [string]. Automatically add hint info under the input.
-  - charBase: [object]. You can custom the char base length, default { 'zh-cn': 1, 'eng': 1 }
+  - charBase: [object]. You can custom the char base length, default `{ 'zh-cn': 1, 'eng': 1 }`
   - onChange(e, value): [Function]. BestInput onChange function.
   - getLength(length): [Function]. Get the BestInput's custom value length.
   - ...Others. Follow-up development. 
