@@ -1,7 +1,7 @@
 # react-best-input
 A simple and best input component for react.
 
-----------------------------------------------------[中文版-README](https://github.com/luffyZh/react-best-input/blob/master/README-ZHCN.md)-----------------------------------------------------------------
+[中文版-README](https://github.com/luffyZh/react-best-input/blob/master/README-ZHCN.md)
 
 ### Example
 ```
