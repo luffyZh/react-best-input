@@ -2,6 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
+const propTypeObj = {
+  style: 'object',
+  error: 'boolean',
+  errMsg: 'string',
+  addons: 'string',
+  maxLength: 'number',
+  charBase: 'object',
+  timer: 'number',
+  label: 'string',
+  placeholder: 'string',
+  disabled: 'boolean'
+}
 class BestInput extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +24,10 @@ class BestInput extends Component {
       addons,
       maxLength,
       charBase,
-      timer
+      timer,
+      label,
+      placeholder,
+      disabled
     } = props;
     this.state = {
       style,
@@ -22,9 +37,18 @@ class BestInput extends Component {
       maxLength,
       charBase,
       timer,
+      label,
+      placeholder,
+      disabled,
       value: props.value ? props.value : '',
       timeout: null
     };
+  }
+  // throw props type error
+  throwPropsTypeError = (type, prop) => {
+    if (prop && typeof prop !== propTypeObj[type]) {
+      throw Error(`The ${type} type of BestInput props is required to be a ${propTypeObj[type]} type.`);
+    }
   }
   // check the props is valid
   checkPropsValid = (props) => {
@@ -36,55 +60,60 @@ class BestInput extends Component {
       maxLength,
       charBase,
       timer,
-      value
+      label,
+      placeholder,
+      disabled,
     } = props;
-    if (style && typeof style !== 'object') {
-      throw Error('The style type of BestInput props is required to be a object type.');
-    }
-    if (error && typeof error !== 'boolean') {
-      throw Error('The error type of BestInput props is required to be a boolean type.');
-    }
-    if (errMsg && typeof errMsg !== 'string') {
-      throw Error('The errMsg type of BestInput props is required to be a string type.');
-    }
-    if (addons && typeof addons !== 'string') {
-      throw Error('The addons type of BestInput props is required to be a string type.');
-    }
-    if (errMsg && typeof errMsg !== 'string') {
-      throw Error('The errMsg type of BestInput props is required to be a string type.');
-    }
-    if (maxLength && typeof maxLength !== 'number') {
-      throw Error('The maxLength type of BestInput props is required to be a number type.');
-    }
-    if (timer && typeof timer !== 'number') {
-      throw Error('The timer type of BestInput props is required to be a number type.');
-    }
-    if (charBase && typeof charBase !== 'object') {
-      throw Error('The charBase type of BestInput props is required to be a object type.');
-    }
-    if (value && typeof value !== 'string') {
-      throw Error('The value type of BestInput props is required to be a string type.');
-    }
+    const propObj = { style, errMsg, error, addons, maxLength, charBase, timer, label, placeholder, disabled };
+    Object.keys(propObj).forEach((key) => {
+      this.throwPropsTypeError(key, propObj[key]);
+    })
   }
-
+  // count custom value length
+  countCustomValueLength = (targetVal) => {
+    const { charBase } = this.state;
+    const zhCnArr = targetVal.match(/[\u4e00-\u9fa5]/g);
+    const zhCnLen = zhCnArr ? zhCnArr.length : 0;
+    console.log('中文字符个数:', zhCnLen);
+    const engLen = targetVal.length - zhCnLen;
+    console.log('英文字符个数', engLen);
+    const resLen = zhCnLen * charBase['zh-cn'] + engLen * charBase['eng'];
+    console.log('真实字符个数：', targetVal.length);
+    console.log('计算后字符个数:', resLen);
+    return resLen;
+  }
+  // get custom value length
+  getCustomValueLength = (targetVal) => {
+    const { charBase } = this.state;
+    const charBaseInValid = !charBase ||
+                          typeof charBase !== 'object' ||
+                          !charBase['zh-cn'] ||
+                          typeof charBase['zh-cn'] !== 'number' ||
+                          !charBase['eng'] ||
+                          typeof charBase['eng'] !== 'number';
+    return charBaseInValid ? targetVal.length : this.countCustomValueLength(targetVal);
+  }
   // listen input value length change
   getInputValueLengthChange = (targetVal) => {
     const { getLength, charBase } = this.props;
     if (charBase && typeof charBase !== 'object') {
       if (typeof getLength === 'function') {
-        getLength && getLength(targetVal.length);
+        getLength && getLength(targetVal);
       }
     } else {
       if (typeof getLength === 'function') {
-        getLength && getLength(targetVal.length);
+        getLength && getLength(this.getCustomValueLength(targetVal));
       }
     }
   }
 
   componentDidMount() {
+    // initial check the props is valid
     this.checkPropsValid(this.props);
+    // if input has a default value, get the value length
     this.getInputValueLengthChange(this.state.value);
   }
+
   componentWillReceiveProps(nextProps) {
     this.checkPropsValid(nextProps);
     const {
@@ -95,7 +124,10 @@ class BestInput extends Component {
       maxLength,
       charBase,
       timer,
-      value
+      value,
+      label,
+      placeholder,
+      disabled
     } = nextProps;
     const newState = {
       style,
@@ -105,21 +137,28 @@ class BestInput extends Component {
       maxLength,
       charBase,
       timer,
-      value
+      value,
+      label,
+      placeholder,
+      disabled
     }
     this.setState({ newState });
   }
+
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.style !== nextState.style &&
-           this.state.error !== nextState.error &&
-           this.state.errMsg !== nextState.errMsg &&
-           this.state.addons !== nextState.addons &&
-           this.state.timer !== nextState.timer &&
-           this.state.maxLength !== nextState.maxLength &&
-           this.state.charBase !== nextState.charBase &&
-           this.state.value !== nextState.value
+    return this.props.style !== nextProps.style ||
+           this.props.error !== nextProps.error ||
+           this.props.errMsg !== nextProps.errMsg ||
+           this.props.addons !== nextProps.addons ||
+           this.props.timer !== nextProps.timer ||
+           this.props.maxLength !== nextProps.maxLength ||
+           this.props.charBase !== nextProps.charBase ||
+           this.props.label !== nextProps.label ||
+           this.props.placeholder !== nextProps.placeholder ||
+           this.props.disabled !== nextProps.disabled ||
+           this.state.value !== nextState.value;
   }
-  // 监听input的变化
+  // listen the change for the input
   handleChange = (e) => {
     const { onChange } = this.props;
     const targetVal = e.target.value;
@@ -142,20 +181,29 @@ class BestInput extends Component {
     }
   }
   render() {
+    const { error, label, placeholder, style, value, errMsg, addons, disabled } = this.props;
     return (
       <div className='inputContainer'>
+        {
+          label && typeof label === 'string'
+          ? <label className='labelStyle'>{label}:</label>
+          : ''
+        }
         <input
-          defaultValue={this.state.value}
-          style={this.state.style}
+          className={error ? 'inputErrorStyle' : ''}
+          defaultValue={value}
+          style={style}
           onChange={this.handleChange}
+          placeholder={placeholder}
+          disabled={disabled}
         />
-        <div className='errMsgContainer' style={this.state.style}>
+        <div className='errMsgContainer' style={style}>
           {
-            this.state.error
+            error
             ? 
-              <span className='errMsgStyle'>{this.state.errMsg}</span>
+              <span className='errMsgStyle'>{errMsg}</span>
             : 
-              <span className='addonsStyle'>{this.state.addons}</span>
+              <span className='addonsStyle'>{addons}</span>
           }
         </div>
       </div>
@@ -168,8 +216,10 @@ BestInput.propTypes = {
   errMsg: PropTypes.string,
   addons: PropTypes.string,
   maxLength: PropTypes.number,
-  charBase: PropTypes.number,
+  charBase: PropTypes.object,
   timer: PropTypes.number,
-  value: PropTypes.string
+  value: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
 }
 export default BestInput;

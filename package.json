@@ -1,7 +1,7 @@
 {
-  "name": "react-deinput",
+  "name": "react-best-input",
   "version": "1.0.0",
-  "description": "A simple debounce input for react.",
+  "description": "A simple and best input component for react.",
   "main": "lib/index.js",
   "repository": "https://github.com/luffyZh/react-best-input.git",
   "author": "luffyZhou",
