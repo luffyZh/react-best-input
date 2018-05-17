@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BestInput from './components/best-input';
 import './App.css';
+import DeInput from 'react-best-input';
 
 class App extends Component {
   constructor(props) {
@@ -68,6 +69,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">React-Best-Input</h1>
         </header>
+        <DeInput addons='fsdfsdf' />
         <div style={{ margin: '20px' }}>
           <BestInput
             label='普通input'
@@ -141,6 +143,7 @@ class App extends Component {
             disabled={true}
           />
         </div>
+        
       </div>
     );
   }
