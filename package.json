@@ -1,13 +1,13 @@
 {
   "name": "react-best-input",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple and best input component for react.",
   "main": "lib/index.js",
   "repository": "https://github.com/luffyZh/react-best-input.git",
   "author": "luffyZhou",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --progress",
+    "build": "webpack -p --progress",
     "watch": "webpack --watch --progress"
   },
   "devDependencies": {
