@@ -69,7 +69,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">React-Best-Input</h1>
         </header>
-        <DeInput addons='fsdfsdf' />
+        <DeInput error={true} errMsg='fsdfsdf' addons='fsdfsdf' />
         <div style={{ margin: '20px' }}>
           <BestInput
             label='普通input'

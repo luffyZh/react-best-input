@@ -7,7 +7,6 @@ const propTypeObj = {
   error: 'boolean',
   errMsg: 'string',
   addons: 'string',
-  maxLength: 'number',
   charBase: 'object',
   timer: 'number',
   label: 'string',
@@ -22,7 +21,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       label,
@@ -34,7 +32,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       label,
@@ -57,14 +54,13 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       label,
       placeholder,
       disabled,
     } = props;
-    const propObj = { style, errMsg, error, addons, maxLength, charBase, timer, label, placeholder, disabled };
+    const propObj = { style, errMsg, error, addons, charBase, timer, label, placeholder, disabled };
     Object.keys(propObj).forEach((key) => {
       this.throwPropsTypeError(key, propObj[key]);
     })
@@ -74,12 +70,8 @@ class BestInput extends Component {
     const { charBase } = this.state;
     const zhCnArr = targetVal.match(/[\u4e00-\u9fa5]/g);
     const zhCnLen = zhCnArr ? zhCnArr.length : 0;
-    console.log('中文字符个数:', zhCnLen);
     const engLen = targetVal.length - zhCnLen;
-    console.log('英文字符个数', engLen);
     const resLen = zhCnLen * charBase['zh-cn'] + engLen * charBase['eng'];
-    console.log('真实字符个数：', targetVal.length);
-    console.log('计算后字符个数:', resLen);
     return resLen;
   }
   // get custom value length
@@ -121,7 +113,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       value,
@@ -134,7 +125,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       value,
@@ -181,7 +171,19 @@ class BestInput extends Component {
     }
   }
   render() {
-    const { error, label, placeholder, style, value, errMsg, addons, disabled } = this.props;
+    const {
+      error,
+      label,
+      placeholder,
+      style,
+      value,
+      errMsg,
+      addons,
+      disabled,
+      onBlur,
+      onKeyDown,
+      onKeyUp
+    } = this.props;
     return (
       <div className='inputContainer'>
         {
@@ -193,9 +195,12 @@ class BestInput extends Component {
           className={error ? 'inputErrorStyle' : ''}
           defaultValue={value}
           style={style}
-          onChange={this.handleChange}
           placeholder={placeholder}
           disabled={disabled}
+          onChange={this.handleChange}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
         />
         <div className='errMsgContainer' style={style}>
           {
@@ -215,7 +220,6 @@ BestInput.propTypes = {
   error: PropTypes.bool,
   errMsg: PropTypes.string,
   addons: PropTypes.string,
-  maxLength: PropTypes.number,
   charBase: PropTypes.object,
   timer: PropTypes.number,
   value: PropTypes.string,
