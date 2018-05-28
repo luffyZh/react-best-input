@@ -170,7 +170,7 @@ class BestInput extends Component {
     }
   }
   render() {
-    const { error, label, placeholder, style, value, errMsg, addons, disabled } = this.props;
+    const { error, label, placeholder, style, value, errMsg, addons, disabled, onBlur, onKeyDown, onKeyUp } = this.props;
     return (
       <div className='inputContainer'>
         {
