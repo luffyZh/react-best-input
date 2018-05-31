@@ -7,7 +7,6 @@ const propTypeObj = {
   error: 'boolean',
   errMsg: 'string',
   addons: 'string',
-  maxLength: 'number',
   charBase: 'object',
   timer: 'number',
   label: 'string',
@@ -22,7 +21,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       label,
@@ -34,7 +32,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       label,
@@ -57,14 +54,13 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       label,
       placeholder,
       disabled,
     } = props;
-    const propObj = { style, errMsg, error, addons, maxLength, charBase, timer, label, placeholder, disabled };
+    const propObj = { style, errMsg, error, addons, charBase, timer, label, placeholder, disabled };
     Object.keys(propObj).forEach((key) => {
       this.throwPropsTypeError(key, propObj[key]);
     })
@@ -74,12 +70,8 @@ class BestInput extends Component {
     const { charBase } = this.state;
     const zhCnArr = targetVal.match(/[\u4e00-\u9fa5]/g);
     const zhCnLen = zhCnArr ? zhCnArr.length : 0;
-    console.log('中文字符个数:', zhCnLen);
     const engLen = targetVal.length - zhCnLen;
-    console.log('英文字符个数', engLen);
     const resLen = zhCnLen * charBase['zh-cn'] + engLen * charBase['eng'];
-    console.log('真实字符个数：', targetVal.length);
-    console.log('计算后字符个数:', resLen);
     return resLen;
   }
   // get custom value length
@@ -121,7 +113,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       value,
@@ -134,7 +125,6 @@ class BestInput extends Component {
       error,
       errMsg,
       addons,
-      maxLength,
       charBase,
       timer,
       value,
@@ -151,7 +141,7 @@ class BestInput extends Component {
            this.props.errMsg !== nextProps.errMsg ||
            this.props.addons !== nextProps.addons ||
            this.props.timer !== nextProps.timer ||
-           this.props.maxLength !== nextProps.maxLength ||
+           this.props.regType !== nextProps.regType ||
            this.props.charBase !== nextProps.charBase ||
            this.props.label !== nextProps.label ||
            this.props.placeholder !== nextProps.placeholder ||
@@ -167,17 +157,17 @@ class BestInput extends Component {
       // debounce input
       clearTimeout(timeout);
       const timeoutFunc = setTimeout(() => {
-        this.setState({ value: targetVal });
         onChange && onChange(e, targetVal);
         this.getInputValueLengthChange(targetVal);
+        this.setState({ value: targetVal });
       }, timer);
       this.setState({ timeout: timeoutFunc }, () => (
         timeout
       ));
     } else {
-      this.setState({ value: targetVal });
       onChange && onChange(e, targetVal);
       this.getInputValueLengthChange(targetVal);
+      this.setState({ value: targetVal });
     }
   }
   render() {
@@ -215,7 +205,6 @@ BestInput.propTypes = {
   error: PropTypes.bool,
   errMsg: PropTypes.string,
   addons: PropTypes.string,
-  maxLength: PropTypes.number,
   charBase: PropTypes.object,
   timer: PropTypes.number,
   value: PropTypes.string,

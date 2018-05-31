@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import BestInput from './components/best-input';
 import './App.css';
-import DeInput from 'react-best-input';
 
 class App extends Component {
   constructor(props) {
@@ -19,7 +18,8 @@ class App extends Component {
       charBase: {
         'zh-cn': 1,
         'eng': 1
-      }
+      },
+      emailTrue: false
     };
   }
 
@@ -63,13 +63,22 @@ class App extends Component {
     this.setState({ charBase });
   }
 
+  handleRegExp = (e, value) => {
+    console.log(value);
+    const regEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+    if (!regEmail.test(value)) {
+      this.setState({ emailTrue: true });
+    } else {
+      this.setState({ emailTrue: false });
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">React-Best-Input</h1>
         </header>
-        <DeInput addons='fsdfsdf' />
         <div style={{ margin: '20px' }}>
           <BestInput
             label='普通input'
@@ -136,6 +145,16 @@ class App extends Component {
         </div>
         <div style={{ margin: '20px' }}>
           <BestInput
+            label='类型校验'
+            style={{ width: '40%' }}
+            timer={600}
+            error={this.state.emailTrue}
+            errMsg='这不是一个合法的邮箱'
+            onChange={this.handleRegExp}
+          />
+        </div><br/><br/>
+        <div style={{ margin: '20px' }}>
+          <BestInput
             value='我是不可用input'
             label='不可用'
             style={{ width: '40%' }}
@@ -143,7 +162,6 @@ class App extends Component {
             disabled={true}
           />
         </div>
-        
       </div>
     );
   }
