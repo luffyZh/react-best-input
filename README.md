@@ -2,7 +2,9 @@
 A simple and best input component for react.
 
 [中文版-README](https://github.com/luffyZh/react-best-input/blob/master/README-ZHCN.md)
-
+### Version
+v1.0.4
+ - extends onBlur, onKeyUp and onKeyDown from normal input.
 ### Example
 ```
 git clone https://github.com/luffyZh/react-best-input.git
@@ -10,7 +12,7 @@ cd demo
 yarn install
 yarn start
 ```
-### How To Use
+### Usage
 ```
 yarn add react-best-input || npm install react-best-input --save
 // in the components

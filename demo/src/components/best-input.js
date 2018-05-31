@@ -171,7 +171,19 @@ class BestInput extends Component {
     }
   }
   render() {
-    const { error, label, placeholder, style, value, errMsg, addons, disabled } = this.props;
+    const {
+      error,
+      label,
+      placeholder,
+      style,
+      value,
+      errMsg,
+      addons,
+      disabled,
+      onBlur,
+      onKeyDown,
+      onKeyUp
+    } = this.props;
     return (
       <div className='inputContainer'>
         {
@@ -183,9 +195,12 @@ class BestInput extends Component {
           className={error ? 'inputErrorStyle' : ''}
           defaultValue={value}
           style={style}
-          onChange={this.handleChange}
           placeholder={placeholder}
           disabled={disabled}
+          onChange={this.handleChange}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
         />
         <div className='errMsgContainer' style={style}>
           {
