@@ -141,7 +141,7 @@ class BestInput extends Component {
            this.props.errMsg !== nextProps.errMsg ||
            this.props.addons !== nextProps.addons ||
            this.props.timer !== nextProps.timer ||
-           this.props.maxLength !== nextProps.maxLength ||
+           this.props.regType !== nextProps.regType ||
            this.props.charBase !== nextProps.charBase ||
            this.props.label !== nextProps.label ||
            this.props.placeholder !== nextProps.placeholder ||
@@ -157,17 +157,17 @@ class BestInput extends Component {
       // debounce input
       clearTimeout(timeout);
       const timeoutFunc = setTimeout(() => {
-        this.setState({ value: targetVal });
         onChange && onChange(e, targetVal);
         this.getInputValueLengthChange(targetVal);
+        this.setState({ value: targetVal });
       }, timer);
       this.setState({ timeout: timeoutFunc }, () => (
         timeout
       ));
     } else {
-      this.setState({ value: targetVal });
       onChange && onChange(e, targetVal);
       this.getInputValueLengthChange(targetVal);
+      this.setState({ value: targetVal });
     }
   }
   render() {
