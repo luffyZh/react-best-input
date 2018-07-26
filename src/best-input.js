@@ -170,7 +170,7 @@ class BestInput extends Component {
     }
   }
   render() {
-    const { error, label, placeholder, style, value, errMsg, addons, disabled, onBlur, onKeyDown, onKeyUp } = this.props;
+    const { error, label, placeholder, style, value, errMsg, addons, disabled, onBlur, onKeyDown, onKeyUp, onFocus } = this.props;
     return (
       <div className='inputContainer'>
         {
@@ -188,6 +188,7 @@ class BestInput extends Component {
           onBlur={onBlur}
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
+          onFocus={onFocus}
         />
         <div className='errMsgContainer' style={style}>
           {
